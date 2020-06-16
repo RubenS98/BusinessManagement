@@ -7,7 +7,12 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/test', function(req, res, next) {
+  req.session.user="Ruben";
   res.send(["Success"]);
+});
+
+router.get('/test2', function(req, res, next) {
+  res.send([req.session.user]);
 });
 
 module.exports = router;

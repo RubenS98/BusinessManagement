@@ -3,6 +3,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+let cors = require("cors");
+const session = require('express-session');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -16,9 +18,16 @@ app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cookieParser('bic'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'build')));
+app.use(cors());
+app.use(session({
+		secret: 'bic',
+		resave: true,
+		saveUninitialized: true,
+		cookie: { maxAge:8*60*60*1000 }
+}));
 
 app.use('/api', indexRouter);
 app.get('/*', function (req, res) {
